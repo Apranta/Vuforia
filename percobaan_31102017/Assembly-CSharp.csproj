@@ -126,6 +126,9 @@
  <Reference Include="Vuforia.UnityExtensions">
  <HintPath>D:/Project/wwwroot/Vuforia/percobaan_31102017/Assets/Vuforia/Scripts/Internal/Vuforia.UnityExtensions.dll</HintPath>
  </Reference>
+ <Reference Include="LitJson">
+ <HintPath>D:/Project/wwwroot/Vuforia/percobaan_31102017/Assets/Plugins/LitJson.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -36,6 +36,7 @@ public class buttonHandler : MonoBehaviour {
 
     public void berita()
     {
+        beritaHandler.instance.createBerita();
         if (showContact)
             showContact = false;
         showBerita = !showBerita;

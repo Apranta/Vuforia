@@ -136,6 +136,9 @@
  <Reference Include="Vuforia.UnityExtensions">
  <HintPath>D:/Project/wwwroot/Vuforia/percobaan_31102017/Assets/Vuforia/Scripts/Internal/Vuforia.UnityExtensions.dll</HintPath>
  </Reference>
+ <Reference Include="LitJson">
+ <HintPath>D:/Project/wwwroot/Vuforia/percobaan_31102017/Assets/Plugins/LitJson.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
