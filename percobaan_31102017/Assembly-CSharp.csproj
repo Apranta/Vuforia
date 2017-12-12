@@ -53,6 +53,8 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\beritaHandler.cs" />
      <Compile Include="Assets\Scripts\buttonHandler.cs" />
+     <Compile Include="Assets\Scripts\headlineBerita.cs" />
+     <Compile Include="Assets\Scripts\isiBerita.cs" />
      <Compile Include="Assets\Vuforia\Scripts\BackgroundPlaneBehaviour.cs" />
      <Compile Include="Assets\Vuforia\Scripts\CloudRecoBehaviour.cs" />
      <Compile Include="Assets\Vuforia\Scripts\CylinderTargetBehaviour.cs" />
@@ -123,11 +125,11 @@
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
  </Reference>
- <Reference Include="Vuforia.UnityExtensions">
- <HintPath>D:/Project/wwwroot/Vuforia/percobaan_31102017/Assets/Vuforia/Scripts/Internal/Vuforia.UnityExtensions.dll</HintPath>
- </Reference>
  <Reference Include="LitJson">
  <HintPath>D:/Project/wwwroot/Vuforia/percobaan_31102017/Assets/Plugins/LitJson.dll</HintPath>
+ </Reference>
+ <Reference Include="Vuforia.UnityExtensions">
+ <HintPath>D:/Project/wwwroot/Vuforia/percobaan_31102017/Assets/Vuforia/Scripts/Internal/Vuforia.UnityExtensions.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

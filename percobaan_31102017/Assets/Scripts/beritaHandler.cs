@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class beritaHandler : MonoBehaviour {
 
     public GameObject headlinePosition;
-    public GameObject headlineBerita;
+    public GameObject headlineBeritaObj;
     public static beritaHandler instance;
     public float yPosition;
     Text[] newJudul;
@@ -35,18 +35,25 @@ public class beritaHandler : MonoBehaviour {
 
     public void createBerita()
     {
-        Debug.Log(jsonString);
-        float newPos = yPosition;
-        for (int i = 0; i < 3; i++)
+        //Debug.Log(jsonString);
+        if(jsonString != null)
         {
-            headlineBerita.transform.position = new Vector3(headlineBerita.transform.position.x, 
-                newPos - (i * 70), headlineBerita.transform.position.z);
-            newJudul = headlineBerita.GetComponentsInChildren<Text>();
-            newJudul[0].text = "Dummy Header Berita " + i;
-            Instantiate(headlineBerita, headlinePosition.transform);
-            headlineBerita.transform.position = new Vector3(headlineBerita.transform.position.x, 
-                yPosition, headlineBerita.transform.position.z);
+            LitJson.JsonData jsonvale = LitJson.JsonMapper.ToObject(jsonString);
+            Debug.Log(jsonvale.Count);
+            float newPos = yPosition;
+            for (int i = 0; i < jsonvale.Count; i++)
+            {
+                headlineBeritaObj.transform.position = new Vector3(headlineBeritaObj.transform.position.x,
+                    newPos - (i * 100), headlineBeritaObj.transform.position.z);
+                newJudul = headlineBeritaObj.GetComponentsInChildren<Text>(true);
+                newJudul[0].text = jsonvale[i]["judul_berita"].ToString();
+                newJudul[1].text = jsonvale[i]["id_berita"].ToString();
+                Instantiate(headlineBeritaObj, headlinePosition.transform);
+                headlineBeritaObj.transform.position = new Vector3(headlineBeritaObj.transform.position.x,
+                    yPosition, headlineBeritaObj.transform.position.z);
+            }
         }
+
     }
 
     private IEnumerator DownloadTest(string url)

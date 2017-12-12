@@ -12,5 +12,10 @@ class Api extends MY_Controller {
 	{
         $data = $this->Berita_m->get();
         echo json_encode($data);
-	}
+    }
+    
+    public function getBerita($id_berita){
+        $data = $this->Berita_m->get_row(['id_berita' => $id_berita]);
+        echo json_encode($data);
+    }
 }
