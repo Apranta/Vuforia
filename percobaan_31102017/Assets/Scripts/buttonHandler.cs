@@ -65,4 +65,9 @@ public class buttonHandler : MonoBehaviour {
     {
         SceneManager.LoadScene("sejarah-budaya");
     }
+
+    public void loadCobaAR()
+    {
+        SceneManager.LoadScene("MenuCobaAR");
+    }
 }
