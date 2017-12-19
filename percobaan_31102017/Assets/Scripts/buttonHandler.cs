@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class buttonHandler : MonoBehaviour {
 
     public GameObject contactObj;
-    public GameObject beritaObj;
     public GameObject wisataObj;
     bool showContact;
     bool showBerita;
@@ -15,14 +14,12 @@ public class buttonHandler : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         showContact = false;
-        showBerita = false;
         showWisata = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         contactObj.SetActive(showContact);
-        beritaObj.SetActive(showBerita);
         wisataObj.SetActive(showWisata);
 	}
 
@@ -45,10 +42,7 @@ public class buttonHandler : MonoBehaviour {
 
     public void berita()
     {
-        beritaHandler.instance.createBerita();
-        if (showContact)
-            showContact = false;
-        showBerita = !showBerita;
+        SceneManager.LoadScene("berita");
     }
 
     public void wisataAlam()

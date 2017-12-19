@@ -7,6 +7,7 @@ public class isiBerita : MonoBehaviour {
     
     public static isiBerita instance;
     public bool showState;
+    public Image imgBerita;
     public Text judul;
     public Text isi;
     public GameObject isi_window;
