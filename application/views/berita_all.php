@@ -25,7 +25,11 @@
                                     <tr>
                                         <?php foreach ($columns as $column): ?>
                                             <th>
-                                                <?= ucwords(str_replace("_", " ", $column)) ?>
+                                                <?php if ($column ==  'id_berita'): ?>
+                                                    #
+                                                <?php else: ?>
+                                                    <?= ucwords(str_replace("_", " ", $column)) ?>
+                                                <?php endif ?>
                                             </th>
                                         <?php endforeach; ?>
                                         <th>Action</th>
@@ -37,7 +41,13 @@
                                         <?php foreach ($columns as $column): ?>
                                             <td>
                                                 <?php $row = (array)$row; ?>
-                                                <?= $row[$column] ?>
+                                                <?php if ($column ==  'username'): ?>
+                                                    <?= $this->Admin_m->get_row(['username' => $row[$column]])->nama ?>
+                                                <?php elseif ($column ==  'foto'): ?>
+                                                    <img width="50%" src="<?= base_url('assets/img/img_berita/'.$row["id_berita"]).'.jpg' ?>" class="img img-thumbnail">
+                                                <?php else: ?>
+                                                    <?= $row[$column] ?>
+                                                <?php endif ?>
                                             </td>
                                         <?php endforeach; ?>
                                         <td align="center">
@@ -68,7 +78,7 @@
         <!-- Add -->
         <div class="modal fade" tabindex="-1" role="dialog" id="add">
           <div class="modal-dialog" role="document">
-            <?= form_open("admin/berita") ?>
+            <?= form_open_multipart("admin/berita") ?>
            <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -76,10 +86,21 @@
               </div>
               <div class="modal-body">
                     <?php foreach ($columns as $column): ?>
+                        <?php if ($column ==  'id_berita' || $column ==  'username' || $column ==  'waktu'): ?>
+                            <?php continue; ?>
+                        <?php endif; ?>
                         <div class="form-group">
                             <label class="form-label"><?= ucwords(str_replace('_', ' ', $column)) ?></label>
+                        <?php if ($column ==  'foto_berita'): ?>
+                            <input type="file" name="foto" class="form-control">
+                        <?php elseif ($column ==  'isi_berita'): ?>
+                            <textarea name="<?= $column ?>" class="form-control"></textarea>
+                        <?php else: ?>
                             <input type="text" id="<?= $column ?>" name="<?= $column ?>" class="form-control">
+                        <?php endif ?>
                         </div>
+                        
+                        
                     <?php endforeach; ?>
               </div>
               <div class="modal-footer">
@@ -96,17 +117,27 @@
         <div class="modal fade" tabindex="-1" role="dialog" id="edit">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-            <?= form_open("admin/berita") ?>
+            <?= form_open_multipart("admin/berita") ?>
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Edit Data Berita</h4>
               </div>
               <div class="modal-body">
                     <input type="hidden" name="edit_id_berita" id="edit_id_berita">
+                    
                     <?php foreach ($columns as $column): ?>
+                        <?php if ($column ==  'id_berita' || $column ==  'username' || $column ==  'waktu'): ?>
+                            <?php continue; ?>
+                        <?php endif; ?>
                         <div class="form-group">
                             <label class="form-label"><?= ucwords(str_replace('_', ' ', $column)) ?></label>
+                            <?php if ($column ==  'foto'): ?>
+                            <input type="file" name="foto" class="form-control">
+                            <?php elseif ($column ==  'isi_berita'): ?>
+                                <textarea id="edit_<?= $column ?>" name="<?= $column ?>" class="form-control"></textarea>
+                            <?php else: ?>
                             <input type="text" id="edit_<?= $column ?>" name="<?= $column ?>" class="form-control">
+                            <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
                     

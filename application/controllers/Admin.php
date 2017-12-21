@@ -10,7 +10,7 @@ class Admin extends MY_Controller
     {
         parent::__construct();
         $this->data['id_role'] = $this->session->userdata('id_role');
-        if (!isset($this->data['id_role']) || $this->data['id_role'] != 1)
+        if (!isset($this->data['id_role']) || $this->data['id_role'] != 2)
         {
             $this->session->unset_userdata('username');
             $this->session->unset_userdata('id_role');
@@ -18,14 +18,17 @@ class Admin extends MY_Controller
             redirect('login');
             exit;
         }
+        $this->load->model('Admin_m');
         $this->load->model('Berita_m');
+        $this->load->model('Jenis_objek_wisata_m');
         $this->load->model('Objek_wisata_m');
+        $this->load->model('Foto_m');
     }
 
     public function index()
     {
         $this->data['title']        = 'Dashboard Admin';
-        $this->data['content']      = 'admin/dashboard';
+        $this->data['content']      = 'dashboard';
         $this->template($this->data);
     }
 
@@ -34,14 +37,15 @@ class Admin extends MY_Controller
         if ($this->POST('insert'))
         {
             $this->data['entry'] = [
-                "id_berita" => $this->POST("id_berita"),
                 "judul_berita" => $this->POST("judul_berita"),
                 "isi_berita" => $this->POST("isi_berita"),
-                "foto_berita" => $this->POST("foto_berita"),
-                "waktu" => $this->POST("waktu"),
-                "username" => $this->POST("username"),
+                "waktu" => date("Y-m-d H:i:s"),
+                "username" => $this->session->userdata('username'),
             ];
             $this->Berita_m->insert($this->data['entry']);
+            if (!empty($_FILES['foto']['name']))
+                $this->upload($this->db->insert_id(),'img_berita', 'foto');
+
             redirect('admin/berita');
             exit;
         }
@@ -55,14 +59,13 @@ class Admin extends MY_Controller
         if ($this->POST('edit') && $this->POST('edit_id_berita'))
         {
             $this->data['entry'] = [
-                "id_berita" => $this->POST("id_berita"),
                 "judul_berita" => $this->POST("judul_berita"),
-                "isi_berita" => $this->POST("isi_berita"),
-                "foto_berita" => $this->POST("foto_berita"),
-                "waktu" => $this->POST("waktu"),
-                "username" => $this->POST("username"),
+                "isi_berita" => $this->POST("isi_berita")
             ];
             $this->Berita_m->update($this->POST('edit_id_berita'), $this->data['entry']);
+            if (!empty($_FILES['foto']['name']))
+                $this->upload($this->POST('edit_id_berita'),'img_berita', 'foto');
+
             redirect('admin/berita');
             exit;
         }
@@ -75,7 +78,7 @@ class Admin extends MY_Controller
         }
                 
         $this->data['data']     = $this->Berita_m->get();
-        $this->data['columns']  = ["id_berita","judul_berita","isi_berita","foto_berita","waktu","username",];
+        $this->data['columns']  = ["id_berita","foto","judul_berita","isi_berita","waktu","username",];
         $this->data['title']    = 'Berita';
         $this->data['content']  = 'berita_all';
         $this->template($this->data, "material-design");
@@ -103,7 +106,7 @@ class Admin extends MY_Controller
         if ($this->POST('insert'))
         {
             $this->data['entry'] = [
-                "id_objek_wisata" => $this->POST("id_objek_wisata"),
+                // "id_objek_wisata" => $this->POST("id_objek_wisata"),
                 "nama_objek_wisata" => $this->POST("nama_objek_wisata"),
                 "id_jenis_objek_wisata" => $this->POST("id_jenis_objek_wisata"),
                 "lokasi_objek_wisata" => $this->POST("lokasi_objek_wisata"),
@@ -120,16 +123,22 @@ class Admin extends MY_Controller
             $this->Objek_wisata_m->delete($this->POST('id_objek_wisata'));
             exit;
         }
-                
+             
+        if ($this->POST('foto') && $this->POST('id'))
+        {
+            $this->Foto_m->delete($this->POST('id'));
+            exit;
+        }
+           
         if ($this->POST('edit') && $this->POST('edit_id_objek_wisata'))
         {
             $this->data['entry'] = [
-                "id_objek_wisata" => $this->POST("id_objek_wisata"),
+                // "id_objek_wisata" => $this->POST("id_objek_wisata"),
                 "nama_objek_wisata" => $this->POST("nama_objek_wisata"),
                 "id_jenis_objek_wisata" => $this->POST("id_jenis_objek_wisata"),
                 "lokasi_objek_wisata" => $this->POST("lokasi_objek_wisata"),
                 "detail_objek_wisata" => $this->POST("detail_objek_wisata"),
-                "latlong_objek_wisata" => $this->POST("latlong_objek_wisata"),
+                // "latlong_objek_wisata" => $this->POST("latlong_objek_wisata"),
             ];
             $this->Objek_wisata_m->update($this->POST('edit_id_objek_wisata'), $this->data['entry']);
             redirect('admin/objek_wisata');
@@ -142,9 +151,29 @@ class Admin extends MY_Controller
             echo json_encode($this->data['objek_wisata']);
             exit;
         }
-                
+          
+        if ($this->POST('insert_foto')) {
+            $files = $_FILES;
+            $cpt = count($_FILES['foto']['name']);
+            $id = $this->POST('id_objek_wisata');
+            for($i=0; $i<$cpt; $i++)
+            {           
+                $_FILES['foto']['name']= $files['foto']['name'][$i];
+                $_FILES['foto']['type']= $files['foto']['type'][$i];
+                $_FILES['foto']['tmp_name']= $files['foto']['tmp_name'][$i];
+                $_FILES['foto']['error']= $files['foto']['error'][$i];
+                $_FILES['foto']['size']= $files['foto']['size'][$i];    
+
+                $this->Foto_m->insert(['id_objek_wisata' => $id]);
+                $prefix = $this->db->insert_id();
+                $this->upload($prefix,'objek_wisata','foto');  
+            }
+            redirect('admin/detail_objek_wisata/'.$id);
+            exit;
+        }
+
         $this->data['data']     = $this->Objek_wisata_m->get();
-        $this->data['columns']  = ["id_objek_wisata","nama_objek_wisata","id_jenis_objek_wisata","lokasi_objek_wisata","detail_objek_wisata","latlong_objek_wisata",];
+        $this->data['columns']  = ["id_objek_wisata","nama_objek_wisata","id_jenis_objek_wisata","lokasi_objek_wisata","detail_objek_wisata","latlong_objek_wisata"];
         $this->data['title']    = 'Title';
         $this->data['content']  = 'objek_wisata_all';
         $this->template($this->data, "material-design");
@@ -166,4 +195,6 @@ class Admin extends MY_Controller
         $this->data['content']  = 'objek_wisata_detail';
         $this->template($this->data, "material-design");
     }
+
+    
 }

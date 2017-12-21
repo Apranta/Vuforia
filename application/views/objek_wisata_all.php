@@ -16,16 +16,23 @@
                         <div class="panel-body">
                             <style type="text/css">
                                 tr th, tr td {text-align: center;}
+                                table{width: 100%;}
                             </style>
                                                                                          
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#add"><i class="glyphicon glyphicon-plus"></i> Tambah</button><hr>
                             
-                            <table class="table table-bordered table-striped table-hover" id="tablea">
+                            <table class="table table-bordered table-responsive" id="tablea">
                                 <thead>
                                     <tr>
                                         <?php foreach ($columns as $column): ?>
                                             <th>
-                                                <?= ucwords(str_replace("_", " ", $column)) ?>
+                                                <?php if ($column == 'id_objek_wisata'): ?>
+                                                    #
+                                                <?php elseif ($column == 'id_jenis_objek_wisata'): ?>
+                                                    Jenis Wisata
+                                                <?php else : ?>
+                                                    <?= ucwords(str_replace("_", " ", $column)) ?>
+                                                <?php endif; ?>
                                             </th>
                                         <?php endforeach; ?>
                                         <th>Action</th>
@@ -37,16 +44,24 @@
                                         <?php foreach ($columns as $column): ?>
                                             <td>
                                                 <?php $row = (array)$row; ?>
-                                                <?= $row[$column] ?>
+                                                <?php if ($column == 'id_jenis_objek_wisata'): ?>
+                                                    <?= $this->Jenis_objek_wisata_m->get_row(['id_jenis_objek_wisata' => $row[$column]])->nama_jenis_objek_wisata ?>
+                                                <?php elseif ($column == 'detail_objek_wisata'): ?>
+                                                    <?= substr($row[$column],0,50) ?>...
+                                                <?php else : ?>
+                                                    
+                                                    <?= $row[$column] ?>
+                                                <?php endif; ?>
+                                                
                                             </td>
                                         <?php endforeach; ?>
                                         <td align="center">
 
-                                                                                <a href="<?= base_url('admin/detail_objek_wisata/'.$row['id_objek_wisata']) ?>" class="btn btn-info waves-effect"><i class="fa fa-eye"></i></a>
+                                            <a href="<?= base_url('admin/detail_objek_wisata/'.$row['id_objek_wisata']) ?>" class="btn btn-info waves-effect"><i class="fa fa-eye"></i></a>
                                         
-                                                                                <button class="btn btn-info waves-effect" data-toggle="modal" data-target="#edit" onclick="get_objek wisata(<?= $row['id_objek_wisata'] ?>)"><i class="fa fa-edit"></i></button>
+                                            <button class="btn btn-info waves-effect" data-toggle="modal" data-target="#edit" onclick="get_objek_wisata(<?= $row['id_objek_wisata'] ?>)"><i class="fa fa-edit"></i></button>
                                         
-                                                                                <button class="btn btn-danger waves-effect" onclick="delete_objek wisata(<?= $row['id_objek_wisata'] ?>)"><i class="glyphicon glyphicon-trash"></i></button>
+                                            <button class="btn btn-danger waves-effect" onclick="delete_objek_wisata(<?= $row['id_objek_wisata'] ?>)"><i class="glyphicon glyphicon-trash"></i></button>
                                         
                                         </td>
                                     </tr>
@@ -76,10 +91,29 @@
               </div>
               <div class="modal-body">
                     <?php foreach ($columns as $column): ?>
-                        <div class="form-group">
-                            <label class="form-label"><?= ucwords(str_replace('_', ' ', $column)) ?></label>
-                            <input type="text" id="<?= $column ?>" name="<?= $column ?>" class="form-control">
-                        </div>
+                        <?php if ($column == 'id_objek_wisata'): ?>
+                            <?php continue; ?>
+                        <?php elseif ($column == 'detail_objek_wisata'): ?>
+                            <div class="form-group">
+                                <label class="form-label"><?= ucwords(str_replace('_', ' ', $column)) ?></label>
+                                <textarea id="<?= $column ?>" name="<?= $column ?>" class="form-control"></textarea>
+                            </div>
+                        <?php elseif ($column == 'id_jenis_objek_wisata'): ?>
+                            <div class="form-group">
+                                <label class="form-label"><?= ucwords(str_replace('_', ' ', $column)) ?></label>
+                                <select id="<?= $column ?>" name="<?= $column ?>" class="form-control">
+                                    <?php foreach ($this->Jenis_objek_wisata_m->get() as $key): ?>
+                                         <option value="<?= $key->id_jenis_objek_wisata?>"><?= $key->nama_jenis_objek_wisata?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                        <?php else : ?>
+                            <div class="form-group">
+                                <label class="form-label"><?= ucwords(str_replace('_', ' ', $column)) ?></label>
+                                <input type="text" id="<?= $column ?>" name="<?= $column ?>" class="form-control">
+                            </div>
+                        <?php endif; ?>
+                        
                     <?php endforeach; ?>
               </div>
               <div class="modal-footer">
@@ -104,10 +138,28 @@
               <div class="modal-body">
                     <input type="hidden" name="edit_id_objek_wisata" id="edit_id_objek_wisata">
                     <?php foreach ($columns as $column): ?>
+                        <?php if ($column == 'id_objek_wisata'): ?>
+                            <?php continue; ?>
+                        <?php elseif ($column == 'id_jenis_objek_wisata'): ?>
+                            <div class="form-group">
+                                <label class="form-label"><?= ucwords(str_replace('_', ' ', $column)) ?></label>
+                                <select id="<?= $column ?>" name="<?= $column ?>" class="form-control">
+                                    <?php foreach ($this->Jenis_objek_wisata_m->get() as $key): ?>
+                                         <option value="<?= $key->id_jenis_objek_wisata?>"><?= $key->nama_jenis_objek_wisata?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                        <?php elseif ($column == 'detail_objek_wisata'): ?>
+                            <div class="form-group">
+                                <label class="form-label"><?= ucwords(str_replace('_', ' ', $column)) ?></label>
+                                <textarea id="edit_<?= $column ?>" name="<?= $column ?>" class="form-control"></textarea>
+                            </div>
+                        <?php else: ?>
                         <div class="form-group">
                             <label class="form-label"><?= ucwords(str_replace('_', ' ', $column)) ?></label>
                             <input type="text" id="edit_<?= $column ?>" name="<?= $column ?>" class="form-control">
                         </div>
+                    <?php endif; ?>
                     <?php endforeach; ?>
                     
               </div>
@@ -130,9 +182,9 @@
             });
         });
         
-        function get_objek wisata(id_objek_wisata) {
+        function get_objek_wisata(id_objek_wisata) {
             $.ajax({
-                url: "<?= base_url('admin/Objek_wisata') ?>",
+                url: "<?= base_url('admin/objek_wisata') ?>",
                 type: 'POST',
                 data: {
                     id_objek_wisata: id_objek_wisata,
@@ -150,16 +202,16 @@
         }
         
         
-        function delete_objek wisata(id_objek_wisata) {
+        function delete_objek_wisata(id_objek_wisata) {
             $.ajax({
-                url: "<?= base_url('admin/Objek_wisata') ?>",
+                url: "<?= base_url('admin/objek_wisata') ?>",
                 type: 'POST',
                 data: {
                     id_objek_wisata: id_objek_wisata,
                     delete: true
                 },
                 success: function() {
-                    window.location = "<?= base_url('admin/Objek_wisata') ?>";
+                    window.location = "<?= base_url('admin/objek_wisata') ?>";
                 }
             });   
         }

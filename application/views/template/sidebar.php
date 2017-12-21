@@ -7,7 +7,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<?=base_url('admin')?>">Objek WIsata KOta Palembang</a>
+                <a class="navbar-brand" href="<?=base_url('')?>">Objek WIsata KOta Palembang</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -31,31 +31,32 @@
                 <?php if ($this->session->userdata('id_role') == 1): ?>
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="<?= base_url('admin') ?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="<?= base_url('') ?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('super_admin/admin') ?>"><i class="fa fa-user fa-fw"></i> Data User</a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('super_admin/berita') ?>"><i class="fa fa-edit fa-fw"></i> Data Berita</a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('super_admin/objek_wisata') ?>"><i class="fa fa-edit fa-fw"></i> Data Objek WIsata</a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('super_admin/testimoni') ?>"><i class="fa fa-edit fa-fw"></i> Data Testimoni</a>
+                        </li>
+                        
+                    </ul>
+                <?php elseif ($this->session->userdata('id_role') == 2): ?>
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="<?= base_url('') ?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
                             <a href="<?= base_url('admin/berita') ?>"><i class="fa fa-edit fa-fw"></i> Data Berita</a>
                         </li>
                         <li>
                             <a href="<?= base_url('admin/objek_wisata') ?>"><i class="fa fa-edit fa-fw"></i> Data Objek WIsata</a>
-                        </li>
-                    </ul>
-                <?php elseif ($this->session->userdata('id_role') == 2): ?>
-                    <ul class="nav" id="side-menu">
-                        <li>
-                            <a href="<?= base_url('divisi') ?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('divisi/penilaian') ?>"><i class="fa fa-edit"></i> Penilaian</a>
-                        </li>
-                    </ul>
-                <?php else : ?>
-                    <ul class="nav" id="side-menu">
-                        <li>
-                            <a href="<?= base_url('pendaftar') ?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('pendaftar/profil') ?>"><i class="fa fa-user fa-fw"></i> Profile</a>
                         </li>
                     </ul>
                 <?php endif; ?>
