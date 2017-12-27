@@ -26,6 +26,11 @@ class Api extends MY_Controller {
         echo json_encode($data);
     }
 
+    public function wisataGetRow($id){
+        $data = $this->Objek_wisata_m->get(['id_objek_wisata' => $id]);
+        echo json_encode($data);
+    }
+
     public function testimoni(){
         $this->load->model('Testimoni_m');
         if($this->POST('testimoni')){
