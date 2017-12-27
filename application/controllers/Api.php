@@ -47,4 +47,10 @@ class Api extends MY_Controller {
         ];
         echo json_encode($response);
     }
+
+    function getPhotoWisata($id){
+        $this->load->model('Foto_m');
+        $data = $this->Foto_m->get(['id_objek_wisata' => $id]);
+        echo json_encode($data);
+    }
 }
