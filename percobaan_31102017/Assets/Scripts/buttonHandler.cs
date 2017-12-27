@@ -105,6 +105,13 @@ public class buttonHandler : MonoBehaviour {
        // Debug.Log(string.Format("{0}, {1}, {2}", newTesti.nama, newTesti.email, newTesti.testi));
     }
 
+    public void keluar()
+    {
+        Application.Quit();
+    }
+
+    
+
     //--------------------- Button Handler -------------------------------------
 
     //---- Testimoni Send ---
@@ -115,7 +122,7 @@ public class buttonHandler : MonoBehaviour {
         form.AddField("nama", newTesti.nama);
         form.AddField("email", newTesti.email);
 
-        UnityWebRequest www = UnityWebRequest.Post("http://localhost/vuforia/api/testimoni", form);
+        UnityWebRequest www = UnityWebRequest.Post("http://52.187.131.133/vuforia/api/testimoni", form);
         yield return www.Send();
 
         if (www.isNetworkError)

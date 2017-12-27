@@ -7,6 +7,8 @@ class Api extends MY_Controller {
     {
         parent::__construct();
         $this->load->model('Berita_m');
+        $this->load->model('Jenis_objek_wisata_m');
+        $this->load->model('Objek_wisata_m');
     }
 	public function index()
 	{
@@ -16,6 +18,11 @@ class Api extends MY_Controller {
     
     public function getBerita($id_berita){
         $data = $this->Berita_m->get_row(['id_berita' => $id_berita]);
+        echo json_encode($data);
+    }
+
+    public function getWisata($id){
+        $data = $this->Objek_wisata_m->get(['id_jenis_objek_wisata' => $id]);
         echo json_encode($data);
     }
 

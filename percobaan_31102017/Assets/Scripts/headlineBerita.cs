@@ -20,7 +20,7 @@ public class headlineBerita : MonoBehaviour {
         isLoaded = false;
         id_berita = gameObject.GetComponentsInChildren<Text>(true);
         id = id_berita[1].text.ToString();
-        url = "http://localhost/vuforia/api/getberita/" + id;
+        url = "52.187.131.133/api/getberita/" + id;
         StartCoroutine(DownloadTest(url));
     }
 	
@@ -37,7 +37,7 @@ public class headlineBerita : MonoBehaviour {
 
     private IEnumerator DownloadTest(string url)
     {
-        WWW www = new WWW(url);
+        WWW www = new WWW("http://" + url);
         yield return www;
         jsonString = www.text;
     }

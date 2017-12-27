@@ -10,12 +10,12 @@ public class BeritaController : MonoBehaviour {
     public GameObject headlineBeritaObj;
     public static BeritaController instance;
     public float yPosition;
-    public string url = "http://localhost/vuforia/api";
+    public string url = "http://52.187.131.133/api";
     public string jsonString;
     public bool isLoaded;
 
     Text[] newJudul;
-    string imageUrl = "http://localhost/vuforia/assets/img/berita/";
+    string imageUrl = "http://52.187.131.133/assets/img/berita/";
     List<Sprite> beritaSprites = new List<Sprite>();
     bool imgLoaded;
 
@@ -38,7 +38,14 @@ public class BeritaController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        JsonData jsonVal = JsonMapper.ToObject(jsonString);
+        if (jsonString == null)
+            return;
+        if (isLoaded == false)
+        {
+            Debug.Log(jsonString);
+            isLoaded = true;
+        }
+        /* JsonData jsonVal = JsonMapper.ToObject(jsonString);
         if (jsonString == null)
             return;
         if (isLoaded == false)
@@ -54,7 +61,7 @@ public class BeritaController : MonoBehaviour {
         {
             createBerita();
             imgLoaded = true;
-        }
+        } */
     }
 
     private IEnumerator DownloadTest(string url)
